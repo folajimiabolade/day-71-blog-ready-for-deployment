@@ -111,12 +111,15 @@ with app.app_context():
     db.create_all()
 
 
+admins_ids = [1, 3]
+
+
 # Create an admin-only decorator
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         # If id is not 1 then return abort with 403 error
-        if current_user.id != 1:
+        if current_user.id not in admins_ids:
             return abort(403)
         # Otherwise continue with the route function
         return f(*args, **kwargs)
